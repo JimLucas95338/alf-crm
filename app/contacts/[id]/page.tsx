@@ -101,8 +101,11 @@ export default async function ContactDetail({ params }: { params: Promise<{ id: 
           <Link href="/contacts" className="text-sm" style={{ color: "var(--muted)" }}>← All contacts</Link>
           <h1 className="text-2xl font-semibold mt-1">{contact.companyName}</h1>
           <div className="text-sm mt-1" style={{ color: "var(--muted)" }}>
-            {[contact.city, contact.state, contact.zip].filter(Boolean).join(" ")}
-            {contact.metroArea ? ` · ${contact.metroArea}` : ""}
+            {contact.address && <div>{contact.address}</div>}
+            <div>
+              {[contact.city, contact.state, contact.zip].filter(Boolean).join(" ")}
+              {contact.metroArea ? ` · ${contact.metroArea}` : ""}
+            </div>
           </div>
         </div>
         <div className="text-right">
@@ -233,6 +236,33 @@ export default async function ContactDetail({ params }: { params: Promise<{ id: 
           </div>
 
           <div className="panel">
+            <div className="p-4 border-b font-medium" style={{ borderColor: "var(--border)" }}>Company info</div>
+            <div className="p-4 text-sm space-y-2">
+              <InfoRow label="Legal name" value={contact.legalName} />
+              <InfoRow label="Parent company" value={contact.parentCompanyName} />
+              <InfoRow label="Property owner" value={contact.propertyOwner} />
+              <InfoRow label="Record type" value={contact.recordType} />
+              <InfoRow label="Industry" value={contact.naicsDescription} />
+              <InfoRow label="NAICS" value={contact.naicsCode} />
+              <InfoRow label="Employees" value={contact.employeeCount ? String(parseInt(contact.employeeCount, 10) || contact.employeeCount) : null} />
+              <InfoRow label="Insurance spend" value={contact.insuranceExpenses} />
+              {contact.linkedIn && (
+                <div className="flex justify-between gap-4">
+                  <span style={{ color: "var(--muted)" }}>LinkedIn</span>
+                  <a href={contact.linkedIn.startsWith("http") ? contact.linkedIn : `https://${contact.linkedIn}`} target="_blank" className="truncate">{contact.linkedIn}</a>
+                </div>
+              )}
+              {contact.facebook && (
+                <div className="flex justify-between gap-4">
+                  <span style={{ color: "var(--muted)" }}>Facebook</span>
+                  <a href={contact.facebook.startsWith("http") ? contact.facebook : `https://${contact.facebook}`} target="_blank" className="truncate">{contact.facebook}</a>
+                </div>
+              )}
+              <InfoRow label="Added" value={fmtDate(contact.createdAt)} />
+            </div>
+          </div>
+
+          <div className="panel">
             <div className="p-4 border-b font-medium" style={{ borderColor: "var(--border)" }}>Executives</div>
             <div className="p-2">
               {contact.executives.length === 0 ? (
@@ -254,6 +284,16 @@ export default async function ContactDetail({ params }: { params: Promise<{ id: 
           )}
         </div>
       </div>
+    </div>
+  );
+}
+
+function InfoRow({ label, value }: { label: string; value: string | null | undefined }) {
+  if (!value) return null;
+  return (
+    <div className="flex justify-between gap-4">
+      <span style={{ color: "var(--muted)" }}>{label}</span>
+      <span className="text-right" style={{ maxWidth: "60%", wordBreak: "break-word" }}>{value}</span>
     </div>
   );
 }
