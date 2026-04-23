@@ -276,14 +276,17 @@ export default async function ContactDetail({ params }: { params: Promise<{ id: 
             </div>
           </div>
 
-          {contact.description && (
-            <div className="panel p-4">
-              <div className="font-medium mb-2">About</div>
-              <p className="leading-relaxed whitespace-pre-line" style={{ fontSize: 14 }}>{contact.description}</p>
-            </div>
-          )}
         </div>
       </div>
+
+      {contact.description && (
+        <div className="panel p-6">
+          <div className="font-medium mb-3">About</div>
+          <p className="leading-relaxed whitespace-pre-line" style={{ fontSize: 15, maxWidth: "75ch" }}>
+            {contact.description}
+          </p>
+        </div>
+      )}
     </div>
   );
 }

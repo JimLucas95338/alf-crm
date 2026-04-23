@@ -18,7 +18,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       <body>
         {loggedIn && (
           <nav className="border-b" style={{ borderColor: "var(--border)", background: "var(--panel)" }}>
-            <div className="max-w-7xl mx-auto flex items-center gap-6 px-6 py-3">
+            <div className="max-w-[1600px] mx-auto flex items-center gap-6 px-6 py-3">
               <Link href="/" className="font-semibold">ALF CRM</Link>
               <Link href="/" className="text-sm">Dashboard</Link>
               <Link href="/queue" className="text-sm">Queue</Link>
@@ -31,7 +31,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             </div>
           </nav>
         )}
-        <main className="max-w-7xl mx-auto px-6 py-6">{children}</main>
+        <main className="max-w-[1600px] mx-auto px-6 py-6">{children}</main>
       </body>
     </html>
   );
