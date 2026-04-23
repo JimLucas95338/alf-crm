@@ -279,7 +279,7 @@ export default async function ContactDetail({ params }: { params: Promise<{ id: 
           {contact.description && (
             <div className="panel p-4">
               <div className="font-medium mb-2">About</div>
-              <p className="text-sm" style={{ color: "var(--muted)" }}>{contact.description}</p>
+              <p className="leading-relaxed whitespace-pre-line" style={{ fontSize: 14 }}>{contact.description}</p>
             </div>
           )}
         </div>
