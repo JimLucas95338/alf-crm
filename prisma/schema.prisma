@@ -1,0 +1,76 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Contact {
+  id                  Int          @id @default(autoincrement())
+  companyName         String
+  parentCompanyName   String?
+  legalName           String?
+  address             String?
+  city                String?
+  state               String?
+  zip                 String?
+  phone               String?
+  website             String?
+  description         String?
+  metroArea           String?
+  naicsCode           String?
+  naicsDescription    String?
+  employeeCount       String?
+  recordType          String?
+  insuranceExpenses   String?
+  linkedIn            String?
+  facebook            String?
+  propertyOwner       String?
+
+  // CRM fields
+  status              String       @default("new") // new, attempted, contacted, interested, not_interested, do_not_call
+  ownerEmail          String?      // assigned team member
+  lastCallAt          DateTime?
+  nextCallAt          DateTime?
+  notes               String?
+
+  executives          Executive[]
+  calls               Call[]
+
+  createdAt           DateTime     @default(now())
+  updatedAt           DateTime     @updatedAt
+
+  @@index([status])
+  @@index([nextCallAt])
+  @@index([lastCallAt])
+  @@index([state])
+}
+
+model Executive {
+  id         Int      @id @default(autoincrement())
+  contactId  Int
+  contact    Contact  @relation(fields: [contactId], references: [id], onDelete: Cascade)
+  firstName  String?
+  lastName   String?
+  title      String?
+  isPrimary  Boolean  @default(false)
+
+  @@index([contactId])
+}
+
+model Call {
+  id          Int      @id @default(autoincrement())
+  contactId   Int
+  contact     Contact  @relation(fields: [contactId], references: [id], onDelete: Cascade)
+  calledAt    DateTime @default(now())
+  outcome     String   // connected, voicemail, no_answer, bad_number, callback, not_interested, interested
+  notes       String?
+  nextCallAt  DateTime?
+  calledBy    String?  // email of team member who made the call
+  createdAt   DateTime @default(now())
+
+  @@index([contactId])
+  @@index([calledAt])
+}
